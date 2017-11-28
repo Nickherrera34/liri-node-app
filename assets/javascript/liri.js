@@ -23,7 +23,6 @@ switch(method){
 			  if (err) {
 			    return console.log('Error occurred: ' + err);
 			  }
-			 // console.log(data.tracks.items[0].artists[0]);
 			 for(var i = 0; i < data.tracks.items[0].artists.length; i++){
 			 	console.log("Artists: " + data.tracks.items[0].artists[i].name);
 
@@ -36,12 +35,11 @@ switch(method){
 
 	case "movie-this":
 
-		if (argTwo === undefined){
+		if (argTwo === ""){
 			argTwo = "Mr+Nobody";
 		};
 
 		var movieURL = "http://www.omdbapi.com/?t=" + argTwo +"&apikey=fbede96a";
-		// console.log(movieURL)
 
 		request(movieURL, function(error, response, body){
 				if (argTwo === undefined) {
@@ -53,7 +51,7 @@ switch(method){
 				      var data = [];
 				      var jsonData = JSON.parse(body);
 				      // console.log(jsonData)
-				      console.log("Title: " + jsonData.Title);
+				      console.log('Title: ' + jsonData.Title);
 				      console.log('Year: ' + jsonData.Year);
 				      console.log('Rated: ' + jsonData.Rated);
 				      console.log('IMDB Rating: ' + jsonData.imdbRating);
