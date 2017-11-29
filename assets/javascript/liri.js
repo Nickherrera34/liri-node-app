@@ -1,5 +1,8 @@
+
+
 var client = require("./keys.js");
 var request = require('request');
+var fs = require("fs");
 
 
 var method = process.argv[2];
@@ -10,7 +13,9 @@ switch(method){
 	case "my-tweets":
 		client.twitterKeys.get('statuses/user_timeline', function(error, tweets, response) {
 		  if(error) throw error;
-
+		  
+		  console.log('----------------------------------------------')
+		  
 		  for(var i = 0; i < tweets.length; i++){
 		  	console.log(tweets[i].text);
 		  }
@@ -19,17 +24,25 @@ switch(method){
 		break;
 
 	case "spotify-this-song":
+			if (argTwo === ""){
+				argTwo = "The+Sign";
+			};
+
 			client.spotifyKeys.search({ type: 'track', query: argTwo, limit: 1 }, function(err, data) {
 			  if (err) {
 			    return console.log('Error occurred: ' + err);
 			  }
+			 
+			 console.log('----------------------------------------------')
+			 
 			 for(var i = 0; i < data.tracks.items[0].artists.length; i++){
-			 	console.log("Artists: " + data.tracks.items[0].artists[i].name);
 
-			 }
-			console.log("Song Name: ", data.tracks.items[0].name)
-			console.log("Song Link: ", data.tracks.items[0].album.href)
-			console.log("Album Name: ", data.tracks.items[0].album.name)
+			  console.log("Artists: " + data.tracks.items[0].artists[i].name);
+
+			  }
+			  console.log("Song Name: ", data.tracks.items[0].name)
+			  console.log("Song Link: ", data.tracks.items[0].album.href)
+			  console.log("Album Name: ", data.tracks.items[0].album.name)
 		});
 		break;
 
@@ -50,7 +63,8 @@ switch(method){
 				    if (!error && response.statusCode == 200) {
 				      var data = [];
 				      var jsonData = JSON.parse(body);
-				      // console.log(jsonData)
+				      
+				      console.log('----------------------------------------------')
 				      console.log('Title: ' + jsonData.Title);
 				      console.log('Year: ' + jsonData.Year);
 				      console.log('Rated: ' + jsonData.Rated);
@@ -69,6 +83,32 @@ switch(method){
 		break;
 
 		case "do-what-it-says":
+			fs.readFile("random.txt.txt", "utf8", function(error, data){
+				if(error){
+					return console.log(error);
+				}
+				
+				var dataArr = data.split(",");
+				
+
+				method = dataArr[0];
+				argTwo = dataArr[1];
+
+				client.spotifyKeys.search({ type: 'track', query: argTwo, limit: 1 }, function(err, data) {
+					if (err) {
+					return console.log('Error occurred: ' + err);
+					}
+					console.log('----------------------------------------------')
+					for(var i = 0; i < data.tracks.items[0].artists.length; i++){
+					console.log("Artists: " + data.tracks.items[0].artists[i].name);
+					}
+									
+					console.log("Song Name: ", data.tracks.items[0].name)
+					console.log("Song Link: ", data.tracks.items[0].album.href)
+					console.log("Album Name: ", data.tracks.items[0].album.name)
+				});
+			});
+
 
 		break;
 
